@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#12263d">
+<title>MEI · Label Cost Studio | Mobile & 12-colour weft</title>
+<style>
+:root{font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#14253b;background:#f4f7fa;font-synthesis:none}
+*{box-sizing:border-box}body{margin:0}button,input{font:inherit}button{cursor:pointer}
+header{background:linear-gradient(110deg,#10233a,#1b4262);color:white;padding:30px max(22px,calc((100vw - 1460px)/2));border-bottom:4px solid #c82d39}
+header .eyebrow{font-size:11px;font-weight:800;letter-spacing:.2em;color:#bed7e6;text-transform:uppercase}
+header h1{font-size:clamp(24px,3vw,38px);letter-spacing:-.04em;margin:6px 0 8px}header p{font-size:14px;color:#c5d5e5;max-width:950px;line-height:1.5;margin:0}
+main{max-width:1500px;margin:auto;padding:20px 24px 60px}
+.toolbar{display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin:0 0 15px}.toolbar button{border:1px solid #c7d3e0;background:white;color:#163b5e;padding:10px 13px;border-radius:10px;font-weight:700;font-size:12px}
+.toolbar button.primary{background:#1a577f;color:white;border-color:#1a577f}.toolbar .right{margin-left:auto;color:#64758a;font-size:12px}
+.notice{border:1px solid #efdb91;border-left:5px solid #caa73f;border-radius:12px;padding:12px 16px;background:#fff9e6;font-size:13px;line-height:1.45;margin-bottom:18px}
+.layout{display:grid;grid-template-columns:minmax(370px,1.04fr) minmax(420px,.96fr);gap:18px;align-items:start}
+.panel{background:white;border:1px solid #dce5ee;border-radius:15px;box-shadow:0 3px 22px #0c244009;overflow:hidden}
+.panel-header{display:flex;align-items:center;justify-content:space-between;padding:17px 20px;background:white;border-bottom:1px solid #e5ebf2}.panel-header h2{font-size:17px;margin:0;letter-spacing:-.02em}
+.panel-header small{font-size:11px;color:#6d7f92}
+.controls{max-height:78vh;overflow-y:auto;scrollbar-color:#c9d7e3 transparent}
+.controls details{border-bottom:1px solid #e8edf3}.controls summary{padding:14px 20px;background:#f9fbfd;color:#214b6d;font-weight:750;cursor:pointer;font-size:12px;letter-spacing:.04em;list-style:none}
+.controls summary:after{content:"＋";float:right;font-size:18px}.controls details[open] summary:after{content:"−"}
+.group-body{padding:9px 19px 12px}.field{padding:10px 0;border-bottom:1px solid #eff2f6;display:grid;grid-template-columns:minmax(0,1fr) 166px;gap:12px;align-items:center}
+.field:last-child{border-bottom:0}.field label{font-size:12px;font-weight:650;line-height:1.35}.field label span{font-size:11px;font-weight:400;color:#788698;display:block;margin-top:3px}
+.edit{display:flex;align-items:center;background:#f0f6fe;border:1px solid #b9d1eb;border-radius:8px;overflow:hidden}.edit input{width:100%;min-width:0;padding:8px 8px;border:0;background:transparent;color:#08528e;font-weight:750;text-align:right;outline:none;font-size:13px}.edit:focus-within{outline:2px solid #5f9dcc}.edit small{color:#58718a;padding:0 8px 0 0;white-space:nowrap;font-size:10px}
+.meta{grid-column:1/-1;display:flex;align-items:center;gap:8px;margin-top:-2px}.meta input{padding:6px 8px;border:1px solid #dae4ee;border-radius:7px;font-size:11px;background:white;color:#53657a;min-width:0;max-width:58%}
+.meta input[type=date]{max-width:150px}.meta span{font-size:10px;color:#9d6d19}
+.rightpanel{position:sticky;top:12px}.hero-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:17px 17px 10px}
+.hero{padding:17px;border:1px solid #d9e7e0;border-radius:11px;background:#eaf7ef}.hero:nth-child(2){border-color:#cce0f0;background:#ecf5fd}
+.hero .title{font-size:11px;color:#456077;letter-spacing:.05em;font-weight:800;text-transform:uppercase}.hero .number{font-size:clamp(23px,2.65vw,34px);letter-spacing:-.045em;font-weight:800;margin:5px 0;color:#0d5234;font-variant-numeric:tabular-nums}.hero:nth-child(2) .number{color:#124f77}
+.hero p{margin:0;font-size:11px;color:#667991}
+.mini-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;padding:0 17px 17px}.mini{border:1px solid #e6ebf0;border-radius:9px;padding:12px}.mini span{display:block;font-size:11px;color:#6b7b8c}.mini strong{display:block;margin-top:4px;font-size:17px;font-variant-numeric:tabular-nums}
+.status{margin:0 17px 17px;padding:10px;border-radius:9px;font-size:12px;font-weight:700;background:#e6f5eb;color:#17633d}.status.bad{background:#fff0ed;color:#a33022}
+.breakdown{padding:0 19px 20px}.breakdown h3{font-size:13px;color:#274561;margin:0 0 13px}
+.bar-row{display:grid;grid-template-columns:130px 1fr 80px;gap:8px;align-items:center;margin:8px 0;font-size:11px}
+.bar{height:10px;background:#edf2f7;border-radius:6px;overflow:hidden}.bar i{display:block;height:100%;background:#2c7597;border-radius:6px}.bar-row:nth-child(3n) .bar i{background:#bd3344}
+.bar-row .money{text-align:right;color:#214560;font-weight:750;font-variant-numeric:tabular-nums}
+.totals{border-top:1px solid #e6edf3;padding:12px 20px 17px}.total-row{display:flex;justify-content:space-between;gap:15px;padding:6px 0;font-size:12px}.total-row strong{font-variant-numeric:tabular-nums}
+.sensitivity{margin-top:18px;padding:20px}.sensitivity h2{font-size:17px;margin:0 0 6px}.sensitivity p,.method p{font-size:12px;color:#63758a;line-height:1.6}
+table{width:100%;border-collapse:collapse;table-layout:fixed;font-size:12px;text-align:right}th,td{padding:10px 7px;border-bottom:1px solid #e7edf3}th:first-child,td:first-child{text-align:left}th{background:#eef5fa;color:#284b68}td.center{background:#e6f6ed;color:#0e6a3f;font-weight:800}
+.method{margin-top:18px;padding:20px}.method h2{margin:0 0 10px;font-size:17px}
+footer{text-align:center;color:#64758a;font-size:11px;margin:23px 0;line-height:1.6}
+input:invalid{outline-color:#ca3947}.hidden-file{display:none}
+@media(max-width:1000px){.layout{grid-template-columns:1fr}.rightpanel{position:static}.controls{max-height:none}}
+@media(max-width:550px){main{padding:14px 10px}header{padding:23px 17px}.field{grid-template-columns:1fr 133px}.bar-row{grid-template-columns:94px 1fr 69px}.hero-grid{padding:10px;gap:7px}.hero{padding:12px}.mini-grid{padding:0 10px 10px}.toolbar .right{width:100%;margin:0}.meta{flex-wrap:wrap}}
+
+/* Multi-colour bill of materials */
+.weft-section{margin:14px 0 5px;border:1px solid #cadce9;border-radius:13px;background:#f5f9fd;padding:14px}
+.weft-top{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:8px}
+.weft-top h3{margin:0;font-size:14px;color:#214b6d}.weft-help{font-size:12px;line-height:1.5;color:#576a80;margin:0 0 12px}
+.weft-top button,.remove-colour{min-height:42px;border:1px solid #92b2cb;border-radius:9px;background:#fff;color:#1a5278;padding:8px 12px;font-size:12px;font-weight:750}
+.weft-top button:disabled,.remove-colour:disabled{opacity:.38;cursor:not-allowed}
+.weft-summary{background:white;border:1px solid #d9e4ed;border-radius:9px;padding:11px 12px;font-size:12px;display:flex;gap:12px;flex-wrap:wrap;margin-bottom:12px}
+.weft-summary strong{color:#174d74}.weft-summary .mismatch{color:#ae332c}
+.weft-card{background:#fff;border:1px solid #d7e3ed;border-radius:12px;padding:14px;margin-bottom:11px}
+.weft-card-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:11px}.weft-card-head strong{font-size:13px}
+.weft-card-fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.weft-card-fields label,.weft-source label{font-size:11px;line-height:1.35;color:#506781;font-weight:700;min-width:0;display:flex;flex-direction:column;gap:5px}
+.weft-card-fields input,.weft-source input{display:block;width:100%;min-width:0;min-height:41px;border:1px solid #b9d1eb;border-radius:8px;padding:8px 10px;background:#f0f6fe;color:#08528e;font-size:14px;font-weight:700;outline-color:#5f9dcc}
+.weft-card-fields input[type=color]{width:100%;padding:3px;cursor:pointer}
+.weft-trace{margin-top:12px;border-top:1px solid #e8edf3;padding-top:9px;font-size:12px}.weft-trace summary{padding:7px 3px!important;background:white!important;letter-spacing:0!important;font-size:11px!important}
+.weft-source{display:grid;grid-template-columns:1fr 1fr;gap:11px;padding:8px 0}
+.weft-card-output{padding:10px 11px;margin-top:12px;border-radius:8px;background:#f0f8f5;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;font-size:11px}
+.weft-card-output strong{color:#166140;font-variant-numeric:tabular-nums}
+.weft-results{padding:0 19px 15px}.weft-results h3{font-size:13px;color:#274561;margin:0 0 9px}
+.weft-result{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:10px;padding:7px 0;border-bottom:1px solid #edf1f5;font-size:11px;align-items:center}
+.weft-result span:first-child{overflow-wrap:anywhere}.weft-result strong{text-align:right;font-variant-numeric:tabular-nums}
+.colour-swatch{display:inline-block;width:11px;height:11px;border:1px solid #bac6d2;border-radius:3px;margin-right:6px;vertical-align:-1px}
+.mobile-nav{display:none}.bar-row>span:first-child{overflow-wrap:anywhere}
+@media(max-width:800px){
+ body{overflow-x:hidden}header{padding:19px 15px}main{padding:12px 10px 65px}
+ .mobile-nav{display:grid;grid-template-columns:1fr 1fr;gap:8px;position:sticky;top:0;z-index:30;padding:8px 0 10px;background:#f4f7fa}
+ .mobile-nav button{border:1px solid #bacdda;background:white;color:#254865;font-weight:750;min-height:48px;border-radius:11px;font-size:14px;padding:7px 8px}
+ .mobile-nav button.active{background:#164e77;color:white;border-color:#164e77}
+ #navCost{display:block;font-size:11px;margin-top:2px;font-variant-numeric:tabular-nums}
+ .layout{display:block}body[data-mobile-view="inputs"] #resultsPanel{display:none}body[data-mobile-view="results"] #inputPanel{display:none}
+ .controls{max-height:none;overflow:visible}.panel-header{padding:15px}.group-body{padding:10px 13px 12px}
+ .field{grid-template-columns:minmax(0,1fr) minmax(105px,40%);gap:8px}.field label{font-size:13px}
+ .edit input{min-height:43px;font-size:16px}.toolbar{gap:7px}.toolbar button{min-height:44px;font-size:12px;flex:1 1 calc(50% - 8px)}
+ .toolbar .right{font-size:11px}.weft-card-fields input,.weft-source input{font-size:16px;min-height:44px}
+ .weft-section{padding:10px;margin:9px 0}.weft-card{padding:11px}.hero .number{font-size:clamp(23px,6vw,36px)}
+ .rightpanel{position:static}.sensitivity{overflow-x:auto}.sensitivity table{min-width:345px}
+}
+@media(max-width:370px){.weft-card-fields{gap:9px}.weft-source{grid-template-columns:1fr}.hero-grid{grid-template-columns:1fr}.mini-grid{grid-template-columns:1fr 1fr}.mini strong{font-size:14px}.field{grid-template-columns:1fr}.edit input{text-align:left}.bar-row{grid-template-columns:88px 1fr 66px;gap:5px;font-size:10px}}
+@media print{.mobile-nav,.weft-section button{display:none!important}#resultsPanel{display:block!important}#inputPanel{display:none!important}}
+
+@media print{header,main{padding:10px}.toolbar,.controls,.notice,.sensitivity,.method,footer{display:none!important}.layout{display:block}.rightpanel{position:static}.panel{box-shadow:none}.bar i{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
+</style>
+</head>
+<body>
+<header>
+<div class="eyebrow">MEI INTERNATIONAL / INDUSTRIAL COST ENGINE</div>
+<h1>Label Cost Studio</h1>
+<p>Woven-label costing with up to 12 individually priced weft colours. Live calculations on desktop and mobile.</p>
+</header>
+<main>
+<nav class="mobile-nav" aria-label="Mobile app views">
+<button type="button" class="active" data-mobile-view="inputs" aria-pressed="true">✎ Inputs</button>
+<button type="button" data-mobile-view="results" aria-pressed="false">▣ Results <span id="navCost">—</span></button>
+</nav>
+<div class="toolbar">
+<button class="primary" id="exportJSON">↓ Save scenario (JSON)</button>
+<button id="importJSON">↑ Import scenario</button><input id="jsonFile" class="hidden-file" type="file" accept=".json,application/json">
+<button id="exportCSV">↓ Export cost breakdown (CSV)</button><button id="printBtn">Print summary</button>
+<button id="resetBtn">Reset to DEMO</button><span class="right" id="lastUpdate">Stored locally in this browser</span>
+</div>
+<div class="notice"><strong>⚠ DEMO DATA — prices have not been verified.</strong> Results update immediately when you edit a field. Electricity, yarn and labor rates <strong>are not connected to live APIs</strong>: enter your actual contractual prices and record the source/date. Scenarios can be exported as JSON; browser autosave is device-specific and may not work in iPhone file previews. For reliable iPhone use, open this page as a hosted HTTPS website.</div>
+
+<div class="layout">
+<section class="panel" id="inputPanel">
+<div class="panel-header"><h2>Quotation inputs</h2><small id="fieldCount"></small></div>
+<div id="controls" class="controls"></div>
+</section>
+<section class="rightpanel" id="resultsPanel">
+<div class="panel">
+<div class="panel-header"><h2>Live results</h2><small id="quoteName"></small></div>
+<div class="hero-grid">
+<div class="hero"><div class="title">Cost per saleable label</div><div id="outCost" class="number">—</div><p>Industrial costs including rejects and setup</p></div>
+<div class="hero"><div class="title">Suggested net selling price</div><div id="outPrice" class="number">—</div><p>Includes target margin and sales commission</p></div>
+</div>
+<div class="mini-grid">
+<div class="mini"><span>Batch industrial cost</span><strong id="outBatch">—</strong></div>
+<div class="mini"><span>Batch profit</span><strong id="outProfit">—</strong></div>
+<div class="mini"><span>Saleable labels / hour</span><strong id="outGoodRate">—</strong></div>
+<div class="mini"><span>Production + setup hours</span><strong id="outHours">—</strong></div>
+<div class="mini"><span>Fully loaded machine cost / h</span><strong id="outMachineHour">—</strong></div>
+<div class="mini"><span>Actual profit / revenue</span><strong id="outMargin">—</strong></div>
+</div>
+<div id="status" class="status">—</div>
+<div class="breakdown"><h3>Cost breakdown per saleable label</h3><div id="bars"></div></div>
+<div class="weft-results"><h3>Weft yarn by colour · batch</h3><div id="weftResults"></div></div>
+<div class="totals">
+<div class="total-row"><span>Batch yarn cost, including rejects</span><strong id="outYarns">—</strong></div>
+<div class="total-row"><span>Production (excluding setup)</span><strong id="outProduction">—</strong></div>
+<div class="total-row"><span>Batch setup</span><strong id="outSetup">—</strong></div>
+<div class="total-row"><span>Batch post-weaving costs</span><strong id="outPost">—</strong></div>
+<div class="total-row"><span>Net batch revenue</span><strong id="outRevenue">—</strong></div>
+</div>
+</div>
+<section class="panel sensitivity"><h2>Sensitivity analysis</h2><p>Suggested price at different electricity tariffs (rows) and warp yarn costs (columns). All other assumptions remain unchanged.</p><div id="sensitivity"></div></section>
+<section class="panel method"><h2>Costing methodology</h2>
+<p><b>Warp:</b> total ends × woven pitch × crimp allowance, divided among lanes. <b>Weft:</b> for each colour, colour picks per label × woven width × strands per pick, divided among lanes, with tail and waste allowances. Yarn mass in kg = metres × denier / 9,000,000. Each colour has its own price per kg.</p>
+<p><b>Production:</b> physical insertions/min × 60 × lanes / physical insertions per label × efficiency; rejects are separate. <b>Colour accounting:</b> the sum of colour picks must equal physical picks per label; strands per pick covers multiple parallel strands of the SAME colour. This model does not yet cover multiple independently selected colours in one physical insertion. <b>Depreciation:</b> (investment − residual value) / years, over scheduled hours.</p>
+<p><b>Net selling price:</b> cost per label / (1 − target margin − commission). Excludes VAT. Prices and formulas are preliminary; do not double-count compressor electricity, finishing or labour.</p>
+</section>
+</section>
+</div>
+<footer>MEI · Standalone costing simulator; no synchronization across devices. HTML version only; no connection to Excel, supplier feeds or other devices. Save a JSON file to back up or transfer a scenario.</footer>
+</main>
+<script>
+"use strict";
+const FIELDS=[{"key":"quote","label":"Quotation reference","value":"MEI-DEMO-001","unit":"text","help":"Internal quotation reference","group":"ORDER & PRICING","critical":false,"kind":"text"},{"key":"quantity","label":"Required saleable labels","value":100000,"unit":"pcs","help":"Net quantity to deliver; rejected labels are calculated separately","group":"ORDER & PRICING","critical":false,"kind":"number"},{"key":"margin","label":"Target margin on selling price","value":0.2,"unit":"%","help":"Industrial margin after sales commission, before taxes","group":"ORDER & PRICING","critical":false,"kind":"number"},{"key":"commission","label":"Sales commission on selling price","value":0.03,"unit":"%","help":"Percentage of net selling price, excluding VAT","group":"ORDER & PRICING","critical":false,"kind":"number"},{"key":"width","label":"Label width","value":30,"unit":"mm","help":"Nominal width of an individual label","group":"LABEL FORMAT & WEAVING EFFICIENCY","critical":false,"kind":"number"},{"key":"pitch","label":"Cutting pitch / woven length","value":60,"unit":"mm","help":"Include any folds and spacing between cuts","group":"LABEL FORMAT & WEAVING EFFICIENCY","critical":false,"kind":"number"},{"key":"lanes","label":"Labels across per weft insertion","value":40,"unit":"count","help":"One weft insertion serves all lanes","group":"LABEL FORMAT & WEAVING EFFICIENCY","critical":false,"kind":"number"},{"key":"gap","label":"Gap between label lanes","value":2,"unit":"mm","help":"Nominal spacing between lanes","group":"LABEL FORMAT & WEAVING EFFICIENCY","critical":false,"kind":"number"},{"key":"selvedge","label":"Side allowance per edge","value":20,"unit":"mm","help":"Used for the width check only","group":"LABEL FORMAT & WEAVING EFFICIENCY","critical":false,"kind":"number"},{"key":"reed","label":"Woven width / weft insertion length","value":1340,"unit":"mm","help":"Actual weaving width, including waste sections","group":"LABEL FORMAT & WEAVING EFFICIENCY","critical":false,"kind":"number"},{"key":"ends","label":"Warp density","value":115,"unit":"ends/cm","help":"Number of warp ends across the full woven width","group":"LABEL FORMAT & WEAVING EFFICIENCY","critical":false,"kind":"number"},{"key":"picks","label":"Weft density","value":85,"unit":"picks/cm","help":"Total physical weft insertions per cm. Colour picks must add up to the required picks per label.","group":"LABEL FORMAT & WEAVING EFFICIENCY","critical":false,"kind":"number"},{"key":"warp_crimp","label":"Extra warp length due to crimp","value":0.05,"unit":"%","help":"Actual increase in yarn path length relative to fabric length","group":"LABEL FORMAT & WEAVING EFFICIENCY","critical":false,"kind":"number"},{"key":"weft_tail","label":"Extra weft consumption per insertion","value":0.03,"unit":"%","help":"Additional weft yarn length per insertion (tails and selvedges); shared by all colours.","group":"LABEL FORMAT & WEAVING EFFICIENCY","critical":false,"kind":"number"},{"key":"warp_denier","label":"Warp yarn linear density","value":75,"unit":"den","help":"1 denier = 1 g per 9,000 m","group":"YARNS & WASTE","critical":false,"kind":"number"},{"key":"warp_price","label":"Warp yarn cost","value":6,"unit":"€/kg","help":"Enter actual purchase price, including duties/freight where applicable","group":"YARNS & WASTE","critical":true,"kind":"number"},{"key":"warp_waste","label":"Warp preparation loss","value":0.04,"unit":"%","help":"Additional loss beyond the yarn incorporated into the fabric","group":"YARNS & WASTE","critical":false,"kind":"number"},{"key":"start_yarn","label":"Startup yarn cost per batch","value":0,"unit":"€/batch","help":"Additional yarn cost at start-up (all colours); do not duplicate quality rejects.","group":"YARNS & WASTE","critical":false,"kind":"number"},{"key":"machine","label":"Machine / configuration","value":"DEMO CONFIGURATION","unit":"text","help":"Replace with the actual model and configuration","group":"MACHINE, ENERGY & ANNUAL COSTS","critical":false,"kind":"text"},{"key":"capex","label":"Net machine purchase price","value":250000,"unit":"€","help":"Excluding recoverable VAT","group":"MACHINE, ENERGY & ANNUAL COSTS","critical":true,"kind":"number"},{"key":"install","label":"Transport, installation & commissioning","value":12000,"unit":"€","help":"Capitalized costs attributable to this machine","group":"MACHINE, ENERGY & ANNUAL COSTS","critical":false,"kind":"number"},{"key":"air_capex","label":"Allocated compressor investment","value":20000,"unit":"€","help":"Only the attributable share; do not duplicate costs included in the machine price","group":"MACHINE, ENERGY & ANNUAL COSTS","critical":false,"kind":"number"},{"key":"residual","label":"Estimated residual value","value":15000,"unit":"€","help":"At the end of the useful life","group":"MACHINE, ENERGY & ANNUAL COSTS","critical":false,"kind":"number"},{"key":"life","label":"Depreciation period","value":8,"unit":"years","help":"Straight-line management depreciation, not tax depreciation","group":"MACHINE, ENERGY & ANNUAL COSTS","critical":false,"kind":"number"},{"key":"days","label":"Scheduled days per year","value":230,"unit":"days","help":"Planned production days for this machine","group":"MACHINE, ENERGY & ANNUAL COSTS","critical":false,"kind":"number"},{"key":"shifts","label":"Shifts per day","value":2,"unit":"shifts","help":"Use the planned annual average","group":"MACHINE, ENERGY & ANNUAL COSTS","critical":false,"kind":"number"},{"key":"shift_hours","label":"Hours per shift","value":8,"unit":"h","help":"Planned operating hours","group":"MACHINE, ENERGY & ANNUAL COSTS","critical":false,"kind":"number"},{"key":"rpm","label":"Weft insertion speed","value":850,"unit":"picks/min","help":"Measured physical insertions/min; colour yarns allocated among these insertions.","group":"MACHINE, ENERGY & ANNUAL COSTS","critical":true,"kind":"number"},{"key":"oee","label":"Overall efficiency (excluding quality rejects)","value":0.82,"unit":"%","help":"Downtime and speed losses; rejected labels are accounted for separately","group":"MACHINE, ENERGY & ANNUAL COSTS","critical":true,"kind":"number"},{"key":"machine_kw","label":"Average loom electrical power","value":15,"unit":"kW","help":"Actual average consumption, not nameplate power","group":"MACHINE, ENERGY & ANNUAL COSTS","critical":true,"kind":"number"},{"key":"air_kw","label":"Allocated average compressor power","value":10,"unit":"kW","help":"Electricity attributable to compressed air; avoid double counting","group":"MACHINE, ENERGY & ANNUAL COSTS","critical":true,"kind":"number"},{"key":"energy","label":"All-in electricity tariff","value":0.24,"unit":"€/kWh","help":"Use the actual company tariff; not updated automatically","group":"MACHINE, ENERGY & ANNUAL COSTS","critical":true,"kind":"number"},{"key":"maint","label":"Annual scheduled maintenance","value":12000,"unit":"€/year","help":"Do not include costs already accounted for in overhead","group":"MACHINE, ENERGY & ANNUAL COSTS","critical":true,"kind":"number"},{"key":"insurance","label":"Allocated annual insurance","value":2500,"unit":"€/year","help":"Annual share attributable to this machine","group":"MACHINE, ENERGY & ANNUAL COSTS","critical":false,"kind":"number"},{"key":"overhead","label":"Allocated annual overhead","value":18000,"unit":"€/year","help":"Floor space, HVAC, supervision and other indirect costs not otherwise counted","group":"MACHINE, ENERGY & ANNUAL COSTS","critical":true,"kind":"number"},{"key":"capital_rate","label":"Optional annual cost of capital","value":0,"unit":"%","help":"Only if not already included in interest or overhead","group":"MACHINE, ENERGY & ANNUAL COSTS","critical":false,"kind":"number"},{"key":"machine_consum","label":"Production spare parts / consumables","value":1.5,"unit":"€/h","help":"Operating materials not included in maintenance","group":"MACHINE, ENERGY & ANNUAL COSTS","critical":false,"kind":"number"},{"key":"labor","label":"Fully loaded labor cost per hour","value":25,"unit":"€/h","help":"Total employer cost, including contributions and benefits","group":"LABOR & SETUP","critical":true,"kind":"number"},{"key":"operators","label":"Equivalent operators per machine","value":0.5,"unit":"FTE/machine","help":"Example: one operator for two machines = 0.5","group":"LABOR & SETUP","critical":false,"kind":"number"},{"key":"setup_hours","label":"Article changeover / startup time","value":2,"unit":"h/batch","help":"Machine occupancy beyond production runtime","group":"LABOR & SETUP","critical":false,"kind":"number"},{"key":"setup_labor","label":"Additional labor hours for setup","value":1,"unit":"h/batch","help":"Only labor hours not already allocated through machine operators","group":"LABOR & SETUP","critical":false,"kind":"number"},{"key":"setup_items","label":"Setup and changeover materials","value":70,"unit":"€/batch","help":"Do not duplicate additional startup yarn costs","group":"LABOR & SETUP","critical":false,"kind":"number"},{"key":"reject","label":"Quality rejects as share of production","value":0.03,"unit":"%","help":"Gross production includes rejects; do not duplicate in OEE","group":"QUALITY & DOWNSTREAM COSTS","critical":false,"kind":"number"},{"key":"finish","label":"Additional cutting / ironing / finishing","value":0.002,"unit":"€/saleable label","help":"If included in the machine process, set to 0 to avoid double counting","group":"QUALITY & DOWNSTREAM COSTS","critical":true,"kind":"number"},{"key":"pack","label":"Packaging","value":0.001,"unit":"€/saleable label","help":"Packaging cost per saleable label","group":"QUALITY & DOWNSTREAM COSTS","critical":false,"kind":"number"},{"key":"qc","label":"Quality inspection","value":0.0005,"unit":"€/saleable label","help":"Additional inspection only, not already included in labor","group":"QUALITY & DOWNSTREAM COSTS","critical":false,"kind":"number"},{"key":"logistics","label":"Internal logistics / handling","value":0.0005,"unit":"€/saleable label","help":"Per saleable label","group":"QUALITY & DOWNSTREAM COSTS","critical":false,"kind":"number"},{"key":"other_good","label":"Other specific costs","value":0,"unit":"€/saleable label","help":"Other costs per conforming label","group":"QUALITY & DOWNSTREAM COSTS","critical":false,"kind":"number"}];
+const STORE="mei_label_cost_studio_v2",OLD_STORE="mei_label_cost_studio_v1";
+const $=id=>document.getElementById(id);
+const defaults=Object.fromEntries(FIELDS.map(f=>[f.key,f.value]));
+const demoYarns=[
+ {id:"w1",name:"White",hex:"#ffffff",denier:75,price:7,picks:210,strands:1,waste:.03,source:"DEMO",verified:""},
+ {id:"w2",name:"Black",hex:"#252525",denier:75,price:7,picks:150,strands:1,waste:.03,source:"DEMO",verified:""},
+ {id:"w3",name:"Red",hex:"#c72b3b",denier:75,price:7,picks:100,strands:1,waste:.03,source:"DEMO",verified:""},
+ {id:"w4",name:"Gold",hex:"#b99744",denier:75,price:7,picks:50,strands:1,waste:.03,source:"DEMO",verified:""}
+];
+let state={values:{...defaults},sources:{},verified:{},yarns:structuredClone(demoYarns)};
+function normalYarn(y,i){
+ const numeric=(key,def)=>y&&typeof y[key]==="number"&&Number.isFinite(y[key])?y[key]:def;
+ return {id:typeof y?.id==="string"&&/^[a-z0-9_-]{1,25}$/i.test(y.id)?y.id:"w"+(i+1),
+ name:typeof y?.name==="string"?y.name.slice(0,65):"Colour "+(i+1),
+ hex:typeof y?.hex==="string"&&/^#[a-f0-9]{6}$/i.test(y.hex)?y.hex:"#789abc",
+ denier:numeric("denier",75),price:numeric("price",7),picks:numeric("picks",0),
+ strands:numeric("strands",1),waste:numeric("waste",.03),
+ source:typeof y?.source==="string"?y.source.slice(0,150):"",
+ verified:typeof y?.verified==="string"&&/^\d{4}-\d\d-\d\d$/.test(y.verified)?y.verified:""};
+}
+function fromLegacy(old){
+ const v=old.values||{};const p=Number.isFinite(v.weft_denier)?v.weft_denier:75;
+ const cost=Number.isFinite(v.weft_price)?v.weft_price:7;
+ const waste=Number.isFinite(v.weft_waste)?v.weft_waste:.03;
+ return [{id:"w1",name:"Imported single-colour weft",hex:"#789abc",denier:p,price:cost,
+  picks:(v.pitch??defaults.pitch)/10*(v.picks??defaults.picks),strands:1,waste,
+  source:old.sources?.weft_price||"",verified:old.verified?.weft_price||""}];
+}
+function loadStored(){
+ try{
+  let stored=JSON.parse(localStorage.getItem(STORE)||"null");
+  if(!stored?.values)stored=JSON.parse(localStorage.getItem(OLD_STORE)||"null");
+  if(stored?.values&&typeof stored.values==="object"){
+    const proposed={...defaults};for(const f of FIELDS){let v=stored.values[f.key];
+      if(f.kind==="text"&&typeof v==="string")proposed[f.key]=v;
+      if(f.kind==="number"&&typeof v==="number"&&Number.isFinite(v))proposed[f.key]=v;
+    }
+    const ys=Array.isArray(stored.yarns)&&stored.yarns.length&&stored.yarns.length<=12?stored.yarns:fromLegacy(stored);
+    state={values:proposed,sources:stored.sources||{},verified:stored.verified||{},yarns:ys.map(normalYarn)};
+  }
+ }catch(e){}
+}
+loadStored();
+const euro=(n,d=4)=>Number.isFinite(n)?new Intl.NumberFormat("en-GB",{style:"currency",currency:"EUR",minimumFractionDigits:d,maximumFractionDigits:d}).format(n):"—";
+const num=(n,d=1)=>Number.isFinite(n)?new Intl.NumberFormat("en-GB",{maximumFractionDigits:d}).format(n):"—";
+const pct=n=>Number.isFinite(n)?new Intl.NumberFormat("en-GB",{style:"percent",maximumFractionDigits:1}).format(n):"—";
+const text=x=>String(x??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const moneyCSV=n=>Number.isFinite(n)?n.toFixed(8):"";
+function persist(){try{localStorage.setItem(STORE,JSON.stringify(state));}catch(e){}$("lastUpdate").textContent="Edited: "+new Date().toLocaleString("en-GB");}
+function download(name,blob){const a=document.createElement("a"),url=URL.createObjectURL(blob);
+ a.href=url;a.download=name;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1500);}
+function drawControls(){
+ const groups=[...new Set(FIELDS.map(f=>f.group))];
+ $("fieldCount").textContent=FIELDS.length+" standard inputs + "+state.yarns.length+" weft colours";
+ $("controls").innerHTML=groups.map((group,idx)=>{
+  const rows=FIELDS.filter(f=>f.group===group).map(f=>{
+   const val=state.values[f.key]??f.value,shown=f.unit==="%"?Number(val)*100:val;
+   const type=f.kind==="text"?"text":"number";
+   const meta=f.critical?`<div class="meta"><span>Source</span><input aria-label="Source ${text(f.label)}" data-source="${f.key}" placeholder="DEMO / supplier" value="${text(state.sources[f.key]||"")}"><span>Verified on</span><input aria-label="Date ${text(f.label)}" type="date" data-verified="${f.key}" value="${text(state.verified[f.key]||"")}"></div>`:"";
+   return `<div class="field"><label for="x-${f.key}" title="${text(f.help)}">${text(f.label)}<span>${text(f.help)}</span></label><div class="edit"><input id="x-${f.key}" data-key="${f.key}" type="${type}" ${type==="number"?'step="any" inputmode="decimal"':''} value="${text(shown)}" aria-label="${text(f.label)}"><small>${text(f.unit)}</small></div>${meta}</div>`;
+  }).join("");
+  const colours=group==="YARNS & WASTE"?'<div id="weftEditor"></div>':"";
+  return `<details ${idx<3?"open":""}><summary>${text(group)}</summary><div class="group-body">${rows}${colours}</div></details>`;
+ }).join("");
+ drawWeft();
+ $("controls").oninput=e=>{
+   const t=e.target,key=t.dataset.key,src=t.dataset.source,date=t.dataset.verified,id=t.dataset.yarnId,field=t.dataset.yarnField;
+   if(key){const f=FIELDS.find(x=>x.key===key);state.values[key]=f.kind==="text"?t.value:(t.value===""?NaN:Number(t.value)/(f.unit==="%"?100:1));}
+   if(src)state.sources[src]=t.value;if(date)state.verified[date]=t.value;
+   if(id&&field){const y=state.yarns.find(z=>z.id===id);if(y){
+     y[field]=["name","hex","source","verified"].includes(field)?t.value:(t.value===""?NaN:Number(t.value)/(field==="waste"?100:1));
+   }}
+   $("fieldCount").textContent=FIELDS.length+" standard inputs + "+state.yarns.length+" weft colours";
+   persist();update();
+ };
+ $("controls").addEventListener("click",e=>{
+   if(e.target.closest("#addWeft")){if(state.yarns.length>=12)return;
+     const id="w"+(Math.max(0,...state.yarns.map(y=>Number(y.id.replace(/^w/,""))||0))+1);
+     state.yarns.push({id,name:"New colour",hex:"#789abc",denier:75,price:7,picks:0,strands:1,waste:.03,source:"",verified:""});
+     drawWeft();persist();update();$("weftEditor").querySelector(`[data-yarn-id="${id}"][data-yarn-field="name"]`)?.focus();
+   }
+   const del=e.target.closest("[data-remove-yarn]");
+   if(del&&state.yarns.length>1){state.yarns=state.yarns.filter(y=>y.id!==del.dataset.removeYarn);drawWeft();persist();update();}
+ });
+}
+function weftInput(y,label,field,unit="",step="any"){
+ let val=y[field],type=["name","source"].includes(field)?"text":field==="hex"?"color":field==="verified"?"date":"number";
+ if(field==="waste")val=val*100;
+ return `<label>${text(label)}${unit?` (${text(unit)})`:""}<input aria-label="${text(label)} for ${text(y.name)}" data-yarn-id="${text(y.id)}" data-yarn-field="${field}" type="${type}" ${type==="number"?`inputmode="decimal" step="${step}"`:""} value="${text(val)}"></label>`;
+}
+function drawWeft(){
+ const total=state.values.pitch/10*state.values.picks,assigned=state.yarns.reduce((n,y)=>n+Number(y.picks||0),0);
+ $("weftEditor").innerHTML=`<section class="weft-section" aria-label="Weft yarn colour editor">
+ <div class="weft-top"><h3>Weft yarn colours <span id="weftCount">${state.yarns.length} / 12</span></h3><button id="addWeft" type="button" ${state.yarns.length>=12?"disabled":""}>＋ Add colour</button></div>
+ <p class="weft-help">Set a separate denier, price, insertion count and waste for each colour. Enter physical picks for one label; all colour picks must add up to the total below. Multiple strands of the same colour are supported.</p>
+ <div class="weft-summary" id="weftSummary"><span>Required: <strong>${num(total,2)}</strong> picks / label</span><span>Assigned: <strong>${num(assigned,2)}</strong></span><span>Remaining: <strong>${num(total-assigned,2)}</strong></span></div>
+ ${state.yarns.map((y,i)=>`<article class="weft-card"><div class="weft-card-head"><strong><span class="colour-swatch" style="background:${text(y.hex)}"></span> Colour ${i+1}</strong><button type="button" class="remove-colour" data-remove-yarn="${text(y.id)}" ${state.yarns.length===1?"disabled":""}>Remove</button></div>
+ <div class="weft-card-fields">${weftInput(y,"Colour name","name")}${weftInput(y,"Swatch","hex")}${weftInput(y,"Yarn count","denier","denier")}${weftInput(y,"Yarn price","price","€/kg")}${weftInput(y,"Picks per label","picks","picks")}${weftInput(y,"Strands per pick","strands","pcs","1")}${weftInput(y,"Yarn waste","waste","%")}</div>
+ <details class="weft-trace"><summary>Price source and date (optional)</summary><div class="weft-source">${weftInput(y,"Supplier / price source","source")}${weftInput(y,"Verified on","verified")}</div></details>
+ <div class="weft-card-output"><span>Yarn for batch: <strong data-yarn-mass="${text(y.id)}">—</strong></span><span>Batch cost: <strong data-yarn-cost="${text(y.id)}">—</strong></span></div>
+ </article>`).join("")}</section>`;
+}
+function calculate(v,yarns=state.yarns){
+ const q=v.quantity,picks=v.pitch/10*v.picks;
+ const width=v.lanes*v.width+Math.max(0,v.lanes-1)*v.gap+2*v.selvedge;
+ const nominal=v.rpm*60/picks*v.lanes,eff=nominal*v.oee,good=eff*(1-v.reject);
+ const gross=q/(1-v.reject),runtime=gross/eff;
+ const annual=v.days*v.shifts*v.shift_hours,occupied=runtime+v.setup_hours;
+ const ends=Math.ceil(v.reed/10*v.ends);
+ const warp_m=ends*v.pitch/1000*(1+v.warp_crimp)/v.lanes;
+ const warp_gross=warp_m*v.warp_denier/9000000*(1+v.warp_waste)*v.warp_price;
+ const colourCosts=yarns.map(y=>{
+   const metres=y.picks*v.reed/1000*(1+v.weft_tail)/v.lanes*y.strands;
+   const kgPerProducedLabel=metres*y.denier/9000000*(1+y.waste);
+   return {id:y.id,name:y.name,hex:y.hex,metres,kgPerProducedLabel,kgBatch:kgPerProducedLabel*gross,
+      costPerProducedLabel:kgPerProducedLabel*y.price,costBatch:kgPerProducedLabel*gross*y.price};
+ });
+ const weft_gross=colourCosts.reduce((a,c)=>a+c.costPerProducedLabel,0);
+ const yarn=gross*(warp_gross+weft_gross)+v.start_yarn;
+ const invest=v.capex+v.install+v.air_capex;
+ const depreciation=Math.max(0,(invest-v.residual)/v.life),capital=invest*v.capital_rate;
+ const fixed_y=depreciation+capital+v.maint+v.insurance+v.overhead;
+ const fixed_h=fixed_y/annual,energy_h=(v.machine_kw+v.air_kw)*v.energy;
+ const labor_h=v.labor*v.operators,variable_h=energy_h+labor_h+v.machine_consum;
+ const machine_h=fixed_h+variable_h,run=machine_h*runtime;
+ const setup=machine_h*v.setup_hours+v.setup_labor*v.labor+v.setup_items;
+ const downstream=v.finish+v.pack+v.qc+v.logistics+v.other_good,post=downstream*q;
+ const total=yarn+run+setup+post,unit=total/q,price=unit/(1-v.margin-v.commission);
+ const commission=price*v.commission,profit=(price-commission-unit)*q,revenue=price*q;
+ const details=[["Warp yarn",warp_gross*gross/q],
+   ...colourCosts.map(c=>["Weft · "+c.name,c.costBatch/q]),
+   ["Startup yarn",v.start_yarn/q],["Depreciation",depreciation/annual*occupied/q],
+   ["Cost of capital",capital/annual*occupied/q],["Maintenance",v.maint/annual*occupied/q],
+   ["Insurance",v.insurance/annual*occupied/q],["Overhead",v.overhead/annual*occupied/q],
+   ["Electricity + compressed air",energy_h*occupied/q],
+   ["Labor",(labor_h*occupied+v.setup_labor*v.labor)/q],
+   ["Machine consumables",v.machine_consum*occupied/q],["Setup materials",v.setup_items/q],
+   ["Finishing and services",downstream]];
+ let warnings=[];
+ if(!(q>0&&v.lanes>0&&Number.isInteger(v.lanes)&&v.pitch>0&&v.picks>0&&v.rpm>0&&v.oee>0&&v.oee<=1&&v.life>0&&annual>0&&v.width>0&&v.reed>0&&v.ends>0))warnings.push("Invalid quantity, integer lane count, geometry, speed, density, OEE or useful life.");
+ if(width>v.reed)warnings.push(`Layout too wide: ${num(width)} mm > ${num(v.reed)} mm available.`);
+ if(v.reject<0||v.reject>=1||v.margin<0||v.commission<0||v.margin+v.commission>=1)warnings.push("Reject rate, margin or commission outside the valid range.");
+ if(v.residual>invest)warnings.push("Residual value exceeds the investment.");
+ const bad=FIELDS.filter(f=>f.kind==="number"&&!Number.isFinite(v[f.key])).map(f=>f.label);
+ if(bad.length)warnings.push("Non-numeric values: "+bad.slice(0,3).join(", "));
+ if(FIELDS.some(f=>f.kind==="number"&&v[f.key]<0))warnings.push("Negative base input: review the values.");
+ if(!Array.isArray(yarns)||yarns.length<1||yarns.length>12)warnings.push("Provide between 1 and 12 weft colours.");
+ if(yarns.some(y=>!y.name.trim()||![y.denier,y.price,y.picks,y.strands,y.waste].every(Number.isFinite)||y.denier<=0||y.price<0||y.picks<0||!Number.isInteger(y.strands)||y.strands<1||y.waste<0))warnings.push("Invalid weft yarn: check names, denier, prices, picks, strand counts and waste.");
+ const assigned=yarns.reduce((s,y)=>s+y.picks,0);
+ if(Number.isFinite(picks)&&Math.abs(assigned-picks)>0.01)warnings.push(`Weft picks mismatch: ${num(assigned,2)} assigned; ${num(picks,2)} required per label.`);
+ if(![total,unit,price,profit].every(Number.isFinite))warnings.push("Unable to calculate: check the denominators.");
+ if(details.some(x=>x[1]<0)||[total,unit,price].some(x=>x<0))warnings.push("Negative cost: review the inputs.");
+ return {q,picks,width,nominal,eff,good,gross,runtime,annual,occupied,ends,warp_m,
+   warp_gross,weft_gross,yarn,colourCosts,assigned,invest,depreciation,capital,fixed_y,fixed_h,energy_h,labor_h,variable_h,
+   machine_h,run,setup,downstream,post,total,unit,price,commission,profit,revenue,details,warnings};
+}
+function update(){
+ const v=state.values,r=calculate(v),ok=r.warnings.length===0;
+ const val=(id,x,dec=4)=>$(id).textContent=ok?euro(x,dec):"—";
+ $("quoteName").textContent=v.quote+" · "+v.machine;
+ val("outCost",r.unit,5);val("outPrice",r.price,5);val("outBatch",r.total,2);
+ val("outProfit",r.profit,2);val("outMachineHour",r.machine_h,2);
+ $("navCost").textContent=ok?euro(r.unit,5)+" / label":"Check inputs";
+ $("outGoodRate").textContent=ok?num(r.good,0):"—";
+ $("outHours").textContent=ok?num(r.occupied,2)+" h":"—";
+ $("outMargin").textContent=ok?pct(r.profit/r.revenue):"—";
+ const st=$("status");st.className="status"+(ok?"":" bad");
+ st.textContent=ok?`✓ Geometry OK (${num(r.width,0)} / ${num(v.reed,0)} mm) · ${state.yarns.length} colours · cost reconciliation: ${euro(r.details.reduce((s,x)=>s+x[1],0)-r.unit,8)}`:r.warnings.join(" · ");
+ if(ok){const positive=r.details.filter(([,cost])=>cost>0),mx=Math.max(...positive.map(x=>x[1]),1e-12);
+   $("bars").innerHTML=positive.map(([label,value])=>`<div class="bar-row"><span title="${text(label)}">${text(label)}</span><div class="bar"><i style="width:${Math.max(1,value/mx*100)}%"></i></div><span class="money">${euro(value,5)}</span></div>`).join("");
+ }else $("bars").innerHTML='<p style="color:#ab302e;font-size:12px">Correct the inputs to display the cost breakdown.</p>';
+ for(const [id,n] of [["outYarns",r.yarn],["outProduction",r.run],["outSetup",r.setup],["outPost",r.post],["outRevenue",r.revenue]])val(id,n,2);
+ $("weftResults").innerHTML=ok?r.colourCosts.map(c=>`<div class="weft-result"><span><span class="colour-swatch" style="background:${text(c.hex)}"></span>${text(c.name)}</span><span>${num(c.kgBatch,4)} kg</span><strong>${euro(c.costBatch,2)}</strong></div>`).join(""):'<p style="font-size:12px;color:#a33022">Correct the inputs to see the weft breakdown.</p>';
+ for(const c of r.colourCosts){const mass=$("weftEditor").querySelector(`[data-yarn-mass="${c.id}"]`),cost=$("weftEditor").querySelector(`[data-yarn-cost="${c.id}"]`);
+   if(mass)mass.textContent=ok?num(c.kgBatch,5)+" kg":"—";
+   if(cost)cost.textContent=ok?euro(c.costBatch,3):"—";
+ }
+ const ws=$("weftSummary");if(ws){ws.classList.toggle("mismatch",Math.abs(r.assigned-r.picks)>0.01);ws.innerHTML=`<span>Required: <strong>${num(r.picks,2)}</strong> picks / label</span><span>Assigned: <strong>${num(r.assigned,2)}</strong></span><span>Remaining: <strong class="${Math.abs(r.assigned-r.picks)>0.01?"mismatch":""}">${num(r.picks-r.assigned,2)}</strong></span>`;}
+ let factors=[.8,1,1.2];
+ $("sensitivity").innerHTML=ok?`<table><thead><tr><th>Electricity \\ Warp yarn</th>${factors.map(f=>`<th>${pct(f)}</th>`).join("")}</tr></thead><tbody>${factors.map((ef,i)=>`<tr><th>${pct(ef)}</th>${factors.map((wf,j)=>{
+  let adjusted=r.unit+r.energy_h*r.occupied/r.q*(ef-1)+r.details[0][1]*(wf-1);
+  return `<td class="${i===1&&j===1?"center":""}">${euro(adjusted/(1-v.margin-v.commission),5)}</td>`;
+ }).join("")}</tr>`).join("")}</tbody></table>`:"<p>Available only with valid inputs.</p>";
+ window.currentResult=r;
+}
+$("exportJSON").addEventListener("click",()=>{
+ const data={app:"MEI Label Cost Studio",version:2,exported:new Date().toISOString(),...state};
+ download("MEI-quotation-"+String(state.values.quote||"scenario").replace(/[^a-z0-9_-]/gi,"_")+".json",new Blob([JSON.stringify(data,null,2)],{type:"application/json"}));
+});
+$("importJSON").addEventListener("click",()=>$("jsonFile").click());
+$("jsonFile").addEventListener("change",async e=>{
+ const f=e.target.files?.[0];if(!f)return;
+ try{
+  const imported=JSON.parse(await f.text());
+  if(![1,2].includes(imported.version)||!imported.values||typeof imported.values!=="object")throw Error("Invalid file format");
+  const proposed={...defaults};
+  for(const field of FIELDS){if(Object.hasOwn(imported.values,field.key)){
+   const v=imported.values[field.key];if(field.kind==="text"&&typeof v==="string")proposed[field.key]=v;
+   else if(field.kind==="number"&&typeof v==="number"&&Number.isFinite(v))proposed[field.key]=v;
+  }}
+  const ys=imported.version===1?fromLegacy(imported):imported.yarns;
+  if(!Array.isArray(ys)||ys.length<1||ys.length>12)throw Error("Scenario must contain 1–12 yarn colours");
+  state={values:proposed,sources:imported.sources||{},verified:imported.verified||{},yarns:ys.map(normalYarn)};
+  persist();drawControls();update();$("lastUpdate").textContent="Scenario loaded on this device";
+ }catch(err){alert("Import failed: "+err.message);}finally{e.target.value="";}
+});
+$("exportCSV").addEventListener("click",()=>{
+ const r=calculate(state.values);if(r.warnings.length){alert("Correct the inputs before exporting.");return;}
+ const rows=[["MEI Label Cost Studio","Value","Unit"],["Quotation",state.values.quote,""],["Machine",state.values.machine,""],
+  ...r.details.map(([k,v])=>[k,moneyCSV(v),"EUR / label"]),
+  ["TOTAL COST PER LABEL",moneyCSV(r.unit),"EUR / label"],["SUGGESTED SELLING PRICE",moneyCSV(r.price),"EUR / label"],
+  ["BATCH COST",moneyCSV(r.total),"EUR"],["OUTPUT",moneyCSV(r.good),"saleable labels / hour"],
+  ["--- WEFT YARNS ---","",""],
+  ...r.colourCosts.flatMap(c=>{const y=state.yarns.find(x=>x.id===c.id);return [
+    [c.name+" · picks/label",y.picks,"picks"],[c.name+" · strands/pick",y.strands,"strands"],
+    [c.name+" · yarn count",y.denier,"denier"],[c.name+" · price",y.price,"EUR/kg"],
+    [c.name+" · waste",y.waste*100,"%"],[c.name+" · batch mass",moneyCSV(c.kgBatch),"kg"],
+    [c.name+" · batch yarn cost",moneyCSV(c.costBatch),"EUR"]];}),
+  ["NOTES","Manual rates, not synchronized with supplier lists or Excel",""]];
+ const csv="\ufeff"+rows.map(row=>row.map(x=>'"'+String(x).replaceAll('"','""')+'"').join(";")).join("\r\n");
+ download("MEI-cost-breakdown-"+String(state.values.quote||"scenario").replace(/[^a-z0-9_-]/gi,"_")+".csv",new Blob([csv],{type:"text/csv;charset=utf-8"}));
+});
+$("printBtn").addEventListener("click",()=>window.print());
+$("resetBtn").addEventListener("click",()=>{
+ if(!confirm("Reset all values and weft colours to DEMO? Current browser autosave will be replaced."))return;
+ state={values:{...defaults},sources:{},verified:{},yarns:structuredClone(demoYarns)};
+ try{localStorage.removeItem(STORE);localStorage.removeItem(OLD_STORE);}catch(e){}
+ drawControls();update();
+});
+document.querySelectorAll("[data-mobile-view]").forEach(btn=>btn.addEventListener("click",()=>{
+ const view=btn.dataset.mobileView;document.body.dataset.mobileView=view;
+ document.querySelectorAll("[data-mobile-view]").forEach(b=>{const active=b.dataset.mobileView===view;b.classList.toggle("active",active);b.setAttribute("aria-pressed",String(active));});
+ window.scrollTo({top:0,behavior:"instant"});
+}));
+document.body.dataset.mobileView="inputs";
+drawControls();update();
+</script>
+</body></html>
